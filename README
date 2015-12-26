@@ -1,0 +1,6 @@
+Copyright 2016 The Blyth Institute
+
+The goal of this project is to create a symbolic mathematics library that can be used in a variety of circumstances - both on the web and in compiled applications.  Therefore, it is being written in haxe, which has both C++ and JS output backends.
+
+This library is currently available under the MIT license, but this is subject to change in the near future.  By committing to this repository, you agree to assign the copyright to your code to The Blyth Institute, who may change the licensing on the project at any time.
+
