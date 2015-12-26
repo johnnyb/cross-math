@@ -1,3 +1,3 @@
-class CMFunction {
+class CMFunction extends CMExpression {
 
 }

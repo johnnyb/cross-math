@@ -1,3 +1,3 @@
-class CMValue extends CMNode {
+class CMValue extends CMExpression {
 
 }

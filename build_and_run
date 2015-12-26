@@ -1,4 +1,5 @@
 #!/bin/sh
 
+rm -f CrossMath.js
 haxe -main CMTestMe -js CrossMath.js *.hx
 node CrossMath.js
