@@ -1,0 +1,3 @@
+class CMVariable extends CMFunction {
+
+}

@@ -1,0 +1,3 @@
+class CMFloatNumber extends CMValue {
+
+}

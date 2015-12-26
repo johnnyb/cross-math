@@ -1,0 +1,3 @@
+class CMEquation extends CMNode {
+
+}

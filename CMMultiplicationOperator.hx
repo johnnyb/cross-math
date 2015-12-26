@@ -1,0 +1,3 @@
+class CMMultiplicationOperator extends CMExpression {
+
+}

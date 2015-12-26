@@ -1,0 +1,3 @@
+class CMExpression extends CMNode {
+
+}

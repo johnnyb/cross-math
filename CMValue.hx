@@ -1,0 +1,3 @@
+class CMValue extends CMNode {
+
+}
