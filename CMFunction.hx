@@ -1,3 +1,3 @@
-class CMFunction extends CMExpression {
+@:expose class CMFunction extends CMExpression {
 
 }

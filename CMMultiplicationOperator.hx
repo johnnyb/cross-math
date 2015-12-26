@@ -1,9 +1,10 @@
-class CMMultiplicationOperator extends CMExpression {
+@:expose class CMMultiplicationOperator extends CMExpression {
 	public function new(operands:Array<CMNode>) {
 		subnodes = operands;
 	}
 
 	override function simplify(opts:Map<String,Dynamic>):CMExpression {
+		// FIXME - should gracefully degrade 
 		var float_result = 1.0;
 		var has_float_result = false;
 		var remaining:Array<CMNode> = [];
@@ -19,15 +20,11 @@ class CMMultiplicationOperator extends CMExpression {
 		}
 
 		for(val in operands) {
-			if(Std.is(val, CMFloatNumber)) {
+			if(Std.is(val, CMNumber)) {
 				has_float_result = true;
 				float_result = float_result * cast(val, CMFloatNumber).asFloatValue();
 			} else {
-				if(opts.get("recurse") == true) {
-					remaining.push(cast(val, CMExpression).simplify(opts));
-				} else {
-					remaining.push(val);
-				}
+				remaining.push(cast(val, CMExpression).simplify(opts));
 			}
 		}
 

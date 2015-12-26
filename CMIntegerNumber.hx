@@ -1,7 +1,7 @@
-@:expose class CMFloatNumber extends CMNumber {
-	var number:Float;
+@:expose class CMIntegerNumber extends CMNumber {
+	var number:Int;
 
-	public function new(a:Float) {
+	public function new(a:Int) {
 		number = a;
 	}
 	

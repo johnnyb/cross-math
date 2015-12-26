@@ -1,3 +1,3 @@
-class CMEquation extends CMNode {
+@:expose class CMEquation extends CMNode {
 
 }

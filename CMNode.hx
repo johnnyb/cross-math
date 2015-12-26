@@ -1,4 +1,4 @@
-class CMNode {
+@:expose class CMNode {
 	var subnodes:Array<CMNode>;
 
 	public function duplicate():CMNode {

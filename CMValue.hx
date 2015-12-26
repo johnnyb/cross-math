@@ -1,3 +1,3 @@
-class CMValue extends CMExpression {
+@:expose class CMValue extends CMExpression {
 
 }

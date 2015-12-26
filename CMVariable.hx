@@ -1,4 +1,4 @@
-class CMVariable extends CMFunction {
+@:expose class CMVariable extends CMFunction {
 	var variableName:String;
 	public function new(n:String) {
 		variableName = n;
