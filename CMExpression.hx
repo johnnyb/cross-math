@@ -15,10 +15,11 @@
 	public function numericEvaluate(ctx:CMEvaluationContext):CMExpression {
 		return null;
 	}
+
 	public function symbolicEvaluate(ctx:CMEvaluationContext):CMExpression {
-		var copy = this.copy();
-		copy.subnodes = [for(node in copy.subnodes) cast(node, CMExpression).symbolicEvaluate(ctx)];
-		return cast(copy, CMExpression);
+		var copy = cast(this.copy(), CMExpression);
+		copy.expressionSubnodes = [for(node in copy.expressionSubnodes) node.symbolicEvaluate(ctx)];
+		return copy;
 	}
 	public function exactEvaluate(ctx:CMEvaluationContext):CMExpression {
 		return this.symbolicEvaluate(ctx).simplify(ctx);

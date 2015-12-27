@@ -1,6 +1,8 @@
 @:expose class CMLib {
 	public static var zero = new CMIntegerNumber(0);
 	public static var one = new CMIntegerNumber(1);
+	public static var negOne = new CMIntegerNumber(-1);
+	public static var undefinedValue = new CMUndefinedValue();
 	public static function isSpecificInteger(n:CMNode, i:Int) {
 		if(Std.is(n, CMIntegerNumber)) {
 			var num = cast(n, CMIntegerNumber);
@@ -108,7 +110,9 @@
 				CMEquation,
 				CMExponentOperator,
 				CMLogOperator,
-				CMMultiplicationOperator
+				CMSubtractionOperator,
+				CMMultiplicationOperator,
+				CMDivisionOperator
 			];
 
 			var otypes = new Map<String, Dynamic>();
@@ -121,5 +125,10 @@
 		}
 
 		return operatortypes;
+	}
+
+	public static function symbolicEvaluate(str:String):CMExpression {
+		var ctx = new CMEvaluationContext();
+		return CMLib.parseExpression(str).symbolicEvaluate(ctx).simplify(ctx);
 	}
 }

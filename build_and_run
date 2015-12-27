@@ -3,3 +3,7 @@
 rm -f CrossMath.js
 haxe -main CMTestMe -js CrossMath.js *.hx
 node CrossMath.js
+
+# C++
+# haxe -cpp cpp -debug -main CMTestMe *.hx
+# cpp/CMTestMe-debug

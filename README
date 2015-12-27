@@ -1,6 +1,30 @@
 Copyright 2016 The Blyth Institute
 
+PURPOSE, GOALS, ETC.
+
 The goal of this project is to create a symbolic mathematics library that can be used in a variety of circumstances - both on the web and in compiled applications.  Therefore, it is being written in haxe, which has both C++ and JS output backends.
 
-This library is currently available under the MIT license, but this is subject to change in the near future.  By committing to this repository, you agree to assign the copyright to your code to The Blyth Institute, who may change the licensing on the project at any time.
+There will be two goals.  The first is to have essentially a Maxima-like system which can be frontended in either JavaScript, C++, or to some degree Objective-C.
+
+The second goal is more interesting.  I want to be able to simply write out a series of equations, and allow the program to make all the connections I need to go through them.  The example I am thinking of is PVT equations and correlations in the oil business.  Imagine if all you had to do was write out what the equations were, then input whichever values and units you currently are using, and then it solves what it can from the values you give.  This would make writing and maintaining science and engineering applications much easier.
+
+However, the second goal is a long way off.  The first step was to make a differential engine, which is the easiest step.  The second step is to do simplifications.  The third step will be to make a good solver.  However, I want the solver to be able to solve for expressions and not just values.  So, I can solve for X/Y and not just X.
+
+This will have both an API frontend and a parsed frontend.  That way, the programmer is not limited to the constraints of the parser.  Mathematics notation is a bit of a mess, so the manual programmatic construction of it I think is important.  This is one of the main areas where Maxima is lagging.
+
+DESIGN
+
+There are many designs to choose from for symbolic algebra.  One option is to leave the equation entirely as a series of symbols, and then do abstract, global, rule-based manipulation of those symbols.  Another option, which we have taken for the moment, it to make each type of operator more knowledgeable about itself, and keep the global rules to a minimum.  For now, we are going with this second approach.  We may switch.  I can see reasons for doing so.  But for now, we are doing an object-oriented, tree approach, where each node on the tree is an object.
+
+The structure of the tree is this - each operator is a separate class, and each has a list of operands with the variable name "subnodes" of type Array<CMNode> (on expression-type objects, there is the same array casted as Array<CMExpression> through the expressionSubnodes property).  This is the static structure of the form.
+
+When doing evaluations, a CMEvaluationContext is passed, the structure of which is still pending.  This will hold variable values, function definitions, mode options, and probably a timer.  Right now, I am not doing any timing, but in the future it will likely be necessary.
+
+The number tree is a bit of a wierd thing, but I decided I should tackle it sooner rather than later.  Basically, a "CMValue" is any type of static value.  In theory, this might even be extended to include enums or strings.  From this, a CMUnknownValue is like a variable, but for constants (usually, A, B, and C in equations).  CMNumber refers to any numeric value, anywhere on the number tree.  Eventually we will have Complex numbers as a subset.  Right now, CMScalarNumber refers to individual numbers.  Right now, we have CMFloatNumber and CMIntegerNumber under the scalars.  Eventually I need to add at least specific constants such as pi.
+
+I am working on having multiplication and addition try to coalesce all of its numbers to one side.  I need to work on a framework of combining whole numbers.  I have a class called CMCompositeValue that I might eventually use to mark that a term is a combination of constants.
+
+LICENSE
+
+This library is currently available under the MIT license, but this is subject to change in the near future.  By committing to this repository, you agree to assign the copyright to your code to The Blyth Institute, who may change the licensing on the project at any time.  If I continue forward, I will be more definite about the license.  Obviously, any version of the code you receive under the MIT license you can continue using even if later the license switches.
 
