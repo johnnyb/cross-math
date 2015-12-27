@@ -20,17 +20,18 @@
 		]);
 	}
 
-	override function simplify(ctx:CMEvaluationContext) {
-		var e = exponent.simplify(ctx);
-		if(CMLib.isZero(e)) {
+	override function simplify(ctx:CMEvaluationContext):CMExpression {
+		var base = cast(subnodes[0], CMExpression).simplify(ctx);
+		var exponent = cast(subnodes[1], CMExpression).simplify(ctx);
+		if(CMLib.isZero(exponent)) {
 			return new CMIntegerNumber(1);
 		}
 
-		if(CMLib.isOne(e)) {
+		if(CMLib.isOne(exponent)) {
 			return base;
 		}
 
-		return this;
+		return new CMExponentOperator(base, exponent);
 	}
 
 	override function getStringForNode() {
