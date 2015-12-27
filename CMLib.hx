@@ -63,6 +63,10 @@
 		return interpret(ary);
 	}
 
+	public static function parseExpression(str:String):CMExpression {
+		return cast(parse(str), CMExpression);
+	}
+
 	public static function interpret(val:Dynamic):CMNode {
 		if(Std.is(val, Array)) {
 			var ary = cast(val, Array<Dynamic>);

@@ -22,6 +22,8 @@
 
 		trace(CMLib.basicParse("(* asdf (23 3) (asdf (asdf2 ff)) (aa) ())"));
 		trace(CMLib.parse("(* 2 3)"));
-		trace(cast(CMLib.parse("(* 2 3)"), CMExpression).simplify(ctx));
+		trace(CMLib.parseExpression("(* 2 3)").simplify(ctx));
+		trace(CMLib.parseExpression("(diff (* x 6))").getStringForNodes());
+		trace(CMLib.parseExpression("(diff (* x 6))").symbolicEvaluate(ctx).simplify(ctx).getStringForNodes());
 	}
 }

@@ -2,9 +2,10 @@
 	public var subnodes:Array<CMNode>;
 
 	public function copy():CMNode {
-		var newnode = Reflect.copy(this);
-		newnode.subnodes = newnode.subnodes.copy();
-		return newnode;
+		var cls = Type.getClass(this);
+		var inst = Type.createEmptyInstance(cls);
+		inst.subnodes = subnodes.copy();
+		return cast(inst, CMNode);
 	}
 
 	public function duplicate():CMNode {

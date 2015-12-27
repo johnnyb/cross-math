@@ -11,6 +11,9 @@
 	}
 
 	function get_level():Int {
+		if(subnodes[1] == null) {
+			return 1;
+		}
 		return cast(subnodes[1], CMIntegerNumber).asIntValue();
 	}
 
@@ -31,6 +34,8 @@
 			simplified = new CMDifferentialOperator(cast(this.expression.subnodes[0], CMExpression), this.level + 1);
 		} else {
 			if(ctx.recursiveSimplify) {
+				var tmp = this.copy();
+				trace(Type.getClassName(Type.getClass(tmp)));
 				var tmpdiff = cast(this.copy(), CMDifferentialOperator);
 				tmpdiff.expression = tmpdiff.expression.simplify(ctx);
 				simplified = tmpdiff;

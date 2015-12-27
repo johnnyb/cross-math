@@ -1,4 +1,14 @@
 @:expose class CMExpression extends CMNode {
+	// All expression subnodes must be expressions.  This limits casting.
+	public var expressionSubnodes(get,set):Array<CMExpression>;
+	public function get_expressionSubnodes():Array<CMExpression> { 
+		return cast subnodes;
+	}
+	public function set_expressionSubnodes(val:Array<CMExpression>):Array<CMExpression> {
+		subnodes = cast val;
+		return val;
+	}
+
 	public function simplify(ctx:CMEvaluationContext):CMExpression {
 		return this;
 	}
@@ -11,7 +21,7 @@
 		return cast(copy, CMExpression);
 	}
 	public function exactEvaluate(ctx:CMEvaluationContext):CMExpression {
-		return null;
+		return this.symbolicEvaluate(ctx).simplify(ctx);
 	}
 
 	public function getDifferential(ctx:CMEvaluationContext):CMExpression {

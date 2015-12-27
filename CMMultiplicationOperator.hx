@@ -41,6 +41,7 @@
 		}
 
 		if(remaining.length == 0) {
+			trace("WARNING: multiplication should not have zero operands");
 			return new CMIntegerNumber(1); // FIXME - should probably have a class for 1 or at least integer
 		}
 
@@ -56,6 +57,7 @@
 	}
 
 	override function getDifferential(ctx:CMEvaluationContext):CMExpression {
+		// FIXME - gather similars into exponents
 		var new_exp:CMExpression = null;
 		if(subnodes.length == 0) {
 			return new CMIntegerNumber(0);
