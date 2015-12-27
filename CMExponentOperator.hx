@@ -20,6 +20,19 @@
 		]);
 	}
 
+	override function simplify(ctx:CMEvaluationContext) {
+		var e = exponent.simplify(ctx);
+		if(CMLib.isZero(e)) {
+			return new CMIntegerNumber(1);
+		}
+
+		if(CMLib.isOne(e)) {
+			return base;
+		}
+
+		return this;
+	}
+
 	override function getStringForNode() {
 		return "^";
 	}

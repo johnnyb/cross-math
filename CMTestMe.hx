@@ -25,5 +25,6 @@
 		trace(CMLib.parseExpression("(* 2 3)").simplify(ctx));
 		trace(CMLib.parseExpression("(diff (* x 6))").getStringForNodes());
 		trace(CMLib.parseExpression("(diff (* x 6))").symbolicEvaluate(ctx).simplify(ctx).getStringForNodes());
+		trace(CMLib.parseExpression("(diff (^ x 2))").symbolicEvaluate(ctx).simplify(ctx).getStringForNodes());
 	}
 }
