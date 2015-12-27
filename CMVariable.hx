@@ -7,4 +7,8 @@
 	override function getStringForNode():String {
 		return variableName;
 	}
+
+	override function isTerminal():Bool {
+		return true;
+	}
 }

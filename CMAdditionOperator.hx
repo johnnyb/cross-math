@@ -1,6 +1,6 @@
 @:expose class CMAdditionOperator extends CMExpression {
-	public function new(operands:Array<CMNode>) {
-		subnodes = operands;
+	public function new(operands:Array<CMExpression>) {
+		expressionSubnodes = operands;
 	}
 
 	override function getDifferential(ctx:CMEvaluationContext) {
@@ -54,8 +54,6 @@
 			return remaining[0];
 		}
 
-		var ary:Array<CMNode> = cast remaining;
-
-		return new CMAdditionOperator(ary);
+		return new CMAdditionOperator(remaining);
 	}
 }

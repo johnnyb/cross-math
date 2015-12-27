@@ -33,4 +33,24 @@
 			return "(" + strings.join(" ") + ")";
 		}
 	}
+
+	public function isTerminal():Bool {
+		return false;
+	}
+
+	function getTerminalsInternal(termlist:Array<CMNode>) {
+		if(this.isTerminal()) {
+			termlist.push(this);
+		} else {
+			for(node in subnodes) {
+				node.getTerminalsInternal(termlist);
+			}
+		}
+	}
+
+	public function getTerminals():Array<CMNode> {
+		var terminals:Array<CMNode> = [];
+		this.getTerminalsInternal(terminals);
+		return terminals;
+	}
 }

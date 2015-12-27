@@ -1,55 +1,65 @@
 @:expose class CMMultiplicationOperator extends CMExpression {
-	public function new(operands:Array<CMNode>) {
-		subnodes = operands;
+	public function new(operands:Array<CMExpression>) {
+		expressionSubnodes = operands;
+	}
+
+	// FIXME - eventually reduce like things to each other
+	static function combineConstants(lst:Array<CMExpression>, ctx:CMEvaluationContext) {
+		if(lst.length == 1) {
+			return lst[0];
+		} else {
+			return new CMMultiplicationOperator(lst);
+		}
+	}
+
+	static function combineMultipliers(lst:Array<CMExpression>, newlst:Array<CMExpression>) {
+		for(node in lst) {
+			if(Std.is(node, CMMultiplicationOperator)) {
+				combineMultipliers(node.expressionSubnodes, newlst);
+			} else {
+				newlst.push(node);
+			}
+		}
 	}
 
 	override function simplify(ctx:CMEvaluationContext):CMExpression {
-		// FIXME - should gracefully degrade 
-		var float_result = 1.0;
-		var has_float_result = false;
-		var remaining:Array<CMNode> = [];
+		// Build from commutative property
+		var operands:Array<CMExpression> = [];
+		combineMultipliers(expressionSubnodes, operands);
 
-		var operands:Array<CMNode> = [];
-
-		for(val in subnodes) {
-			if(Std.is(val, CMMultiplicationOperator)) {
-				operands = operands.concat(val.subnodes);
+		// Separate out constants and non-constants
+		var constants:Array<CMExpression> = [];
+		var non_constants:Array<CMExpression> = [];
+		for(node in operands) {
+			if(CMLib.isZero(node)) {
+				return CMLib.zero; // Short-circuit
+			}
+			if(CMLib.isOne(node)) {
+				// Do nothing - identity
+			}
+			if(node.isConstantExpression()) {
+				constants.push(node);
 			} else {
-				operands.push(val);
+				non_constants.push(node);
 			}
 		}
 
-		for(val in operands) {
-			if(CMLib.isZero(val)) { // Short-circuit
-				return new CMIntegerNumber(0);
-			}
+		// Rebuild new value
 
-			if(CMLib.isOne(val)) {
-				// Skip
-			} else {
-				if(Std.is(val, CMScalarNumber)) {
-					has_float_result = true;
-					float_result = float_result * cast(val, CMScalarNumber).asFloatValue();
-				} else {
-					remaining.push(cast(val, CMExpression).simplify(ctx));
-				}
-			}
+		var new_operands:Array<CMExpression> = non_constants;
+		if(constants.length > 0) {
+			new_operands.unshift(combineConstants(constants, ctx));
 		}
 
-		if(has_float_result) {
-			remaining.push(new CMFloatNumber(float_result));
+		if(new_operands.length == 0) {
+			return CMLib.one;
 		}
 
-		if(remaining.length == 0) {
-			trace("WARNING: multiplication should not have zero operands");
-			return new CMIntegerNumber(1); // FIXME - should probably have a class for 1 or at least integer
+		if(new_operands.length == 1) {
+			return new_operands[0];
 		}
 
-		if(remaining.length == 1) {
-			return cast(remaining[0], CMExpression);
-		}
-
-		return new CMMultiplicationOperator(remaining);
+		return new CMMultiplicationOperator(new_operands);
 	}
 
 	override function getStringForNode() {
@@ -59,17 +69,18 @@
 	override function getDifferential(ctx:CMEvaluationContext):CMExpression {
 		// FIXME - gather similars into exponents
 		var new_exp:CMExpression = null;
-		if(subnodes.length == 0) {
+		var elist = expressionSubnodes;
+		if(elist.length == 0) {
 			return new CMIntegerNumber(0);
 		}
-		if(subnodes.length == 1) {
-			return cast(subnodes[0], CMExpression).getDifferential(ctx);
+		if(elist.length == 1) {
+			return elist[0].getDifferential(ctx);
 		}
-		for(node in subnodes) {
+		for(node in expressionSubnodes) {
 			if(new_exp == null) {
-				new_exp = cast(node, CMExpression);
+				new_exp = node;
 			} else {
-				var diff_node = cast(node, CMExpression).getDifferential(ctx);
+				var diff_node = node.getDifferential(ctx);
 				var diff_exp = new_exp.getDifferential(ctx);
 				new_exp = new CMAdditionOperator([new CMMultiplicationOperator([new_exp, diff_node]), new CMMultiplicationOperator([diff_exp, node])]);
 			}

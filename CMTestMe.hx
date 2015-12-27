@@ -7,7 +7,7 @@
 		exp = exp.simplify(ctx);
 		trace(exp.getStringForNodes());
 
-		exp = new CMDifferentialOperator(exp, 1);
+		exp = new CMDifferentialOperator(exp, 1).simplify(ctx);
 		trace(exp.getStringForNodes());
 		exp = exp.symbolicEvaluate(ctx);
 		trace(exp.getStringForNodes());
@@ -17,7 +17,7 @@
 		trace(exp.getStringForNodes());
 
 		exp = new CMDifferentialOperator(new CMExponentOperator(new CMVariable("x"), new CMVariable("y")), 1);
-		exp = exp.symbolicEvaluate(ctx);
+		exp = exp.symbolicEvaluate(ctx).simplify(ctx);
 		trace(exp.getStringForNodes());
 
 		trace(CMLib.basicParse("(* asdf (23 3) (asdf (asdf2 ff)) (aa) ())"));

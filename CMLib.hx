@@ -1,4 +1,6 @@
 @:expose class CMLib {
+	public static var zero = new CMIntegerNumber(0);
+	public static var one = new CMIntegerNumber(1);
 	public static function isSpecificInteger(n:CMNode, i:Int) {
 		if(Std.is(n, CMIntegerNumber)) {
 			var num = cast(n, CMIntegerNumber);

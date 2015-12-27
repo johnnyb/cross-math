@@ -27,4 +27,15 @@
 	public function getDifferential(ctx:CMEvaluationContext):CMExpression {
 		return new CMDifferentialOperator(this, 1);
 	}
+
+	public function isConstantExpression():Bool {
+		var termlist = this.getTerminals();
+		for(term in termlist) {
+			if(!Std.is(term, CMValue)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

@@ -1,9 +1,9 @@
 @expose class CMScalarNumber extends CMNumber {
 	public function asFloatValue():Float {
-		return null;
+		return Math.NaN;
 	}
 
 	public function asIntValue():Int {
-		return null;
+		return 0;
 	}
 }
