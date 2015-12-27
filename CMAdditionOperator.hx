@@ -3,10 +3,10 @@
 		subnodes = operands;
 	}
 
-	override function getDifferential(opts:Map<String, Dynamic>) {
-		return new CMAdditionOperator([for(node in subnodes) cast(node, CMExpression).getDifferential(opts)]);
+	override function getDifferential(ctx:CMEvaluationContext) {
+		return new CMAdditionOperator([for(node in subnodes) cast(node, CMExpression).getDifferential(ctx)]);
 	}
 	override function getStringForNode() {
 		return "+";
-	}	
+	}
 }

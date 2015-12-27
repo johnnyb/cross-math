@@ -25,14 +25,14 @@
 		this.level = lvl;
 	}
 
-	override function simplify(opts:Map<String,Dynamic>):CMExpression {
+	override function simplify(ctx:CMEvaluationContext):CMExpression {
 		var simplified:CMExpression;
 		if(Std.is(this.expression, CMDifferentialOperator)) {
 			simplified = new CMDifferentialOperator(cast(this.expression.subnodes[0], CMExpression), this.level + 1);
 		} else {
-			if(opts["recurse"] == null || opts["recurse"] == false) {
+			if(ctx.recursiveSimplify) {
 				var tmpdiff = cast(this.copy(), CMDifferentialOperator);
-				tmpdiff.expression = tmpdiff.expression.simplify(opts);
+				tmpdiff.expression = tmpdiff.expression.simplify(ctx);
 				simplified = tmpdiff;
 			} else {
 				simplified = this;
@@ -42,19 +42,19 @@
 		return simplified;
 	}
 
-	override function symbolicEvaluate(opts:Map<String,Dynamic>):CMExpression {
+	override function symbolicEvaluate(ctx:CMEvaluationContext):CMExpression {
 		if(Std.is(this.expression, CMVariable)) {
 			return this;
 		}
 		var exp = this.expression;
 		for(i in 0...(this.level)) {
-			exp = getExpressionDifferential(exp, opts);
+			exp = getExpressionDifferential(exp, ctx);
 		}
 		return exp;
 	}
 
-	function getExpressionDifferential(expression:CMExpression, opts:Map<String,Dynamic>):CMExpression {
-		return expression.getDifferential(opts);
+	function getExpressionDifferential(expression:CMExpression, ctx:CMEvaluationContext):CMExpression {
+		return expression.getDifferential(ctx);
 	}
 
 	override function getStringForNode() {

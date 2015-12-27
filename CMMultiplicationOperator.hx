@@ -3,7 +3,7 @@
 		subnodes = operands;
 	}
 
-	override function simplify(opts:Map<String,Dynamic>):CMExpression {
+	override function simplify(ctx:CMEvaluationContext):CMExpression {
 		// FIXME - should gracefully degrade 
 		var float_result = 1.0;
 		var has_float_result = false;
@@ -20,11 +20,19 @@
 		}
 
 		for(val in operands) {
-			if(Std.is(val, CMNumber)) {
-				has_float_result = true;
-				float_result = float_result * cast(val, CMFloatNumber).asFloatValue();
+			if(CMLib.isZero(val)) { // Short-circuit
+				return new CMIntegerNumber(0);
+			}
+
+			if(CMLib.isOne(val)) {
+				// Skip
 			} else {
-				remaining.push(cast(val, CMExpression).simplify(opts));
+				if(Std.is(val, CMScalarNumber)) {
+					has_float_result = true;
+					float_result = float_result * cast(val, CMScalarNumber).asFloatValue();
+				} else {
+					remaining.push(cast(val, CMExpression).simplify(ctx));
+				}
 			}
 		}
 
@@ -33,7 +41,7 @@
 		}
 
 		if(remaining.length == 0) {
-			return new CMFloatNumber(1.0); // FIXME - should probably have a class for 1 or at least integer
+			return new CMIntegerNumber(1); // FIXME - should probably have a class for 1 or at least integer
 		}
 
 		if(remaining.length == 1) {
@@ -47,20 +55,20 @@
 		return "*";
 	}
 
-	override function getDifferential(opts:Map<String, Dynamic>):CMExpression {
+	override function getDifferential(ctx:CMEvaluationContext):CMExpression {
 		var new_exp:CMExpression = null;
 		if(subnodes.length == 0) {
 			return new CMIntegerNumber(0);
 		}
 		if(subnodes.length == 1) {
-			return cast(subnodes[0], CMExpression).getDifferential(opts);
+			return cast(subnodes[0], CMExpression).getDifferential(ctx);
 		}
 		for(node in subnodes) {
 			if(new_exp == null) {
 				new_exp = cast(node, CMExpression);
 			} else {
-				var diff_node = cast(node, CMExpression).getDifferential(opts);
-				var diff_exp = new_exp.getDifferential(opts);
+				var diff_node = cast(node, CMExpression).getDifferential(ctx);
+				var diff_exp = new_exp.getDifferential(ctx);
 				new_exp = new CMAdditionOperator([new CMMultiplicationOperator([new_exp, diff_node]), new CMMultiplicationOperator([diff_exp, node])]);
 			}
 		}

@@ -1,5 +1,5 @@
 @:expose class CMNode {
-	var subnodes:Array<CMNode>;
+	public var subnodes:Array<CMNode>;
 
 	public function copy():CMNode {
 		var newnode = Reflect.copy(this);
