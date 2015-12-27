@@ -22,7 +22,11 @@
 			var strings:Array<String> = [];
 			strings.push(getStringForNode());
 			for(n in subnodes) {
-				strings.push(n.getStringForNodes());
+				if(n == null) {
+					strings.push("*ERROR*");
+				} else {
+					strings.push(n.getStringForNodes());
+				}
 			}
 
 			return "(" + strings.join(" ") + ")";

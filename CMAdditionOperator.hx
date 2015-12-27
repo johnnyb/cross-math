@@ -1,4 +1,4 @@
-class CMAdditionOperator extends CMExpression {
+@:expose class CMAdditionOperator extends CMExpression {
 	public function new(operands:Array<CMNode>) {
 		subnodes = operands;
 	}
@@ -6,4 +6,7 @@ class CMAdditionOperator extends CMExpression {
 	override function getDifferential(opts:Map<String, Dynamic>) {
 		return new CMAdditionOperator([for(node in subnodes) cast(node, CMExpression).getDifferential(opts)]);
 	}
+	override function getStringForNode() {
+		return "+";
+	}	
 }

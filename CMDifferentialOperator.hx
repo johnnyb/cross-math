@@ -6,7 +6,7 @@
 		return cast(subnodes[0], CMExpression);
 	}
 	function set_expression(exp:CMExpression):CMExpression {
-		subnodes[1] = exp;
+		subnodes[0] = exp;
 		return exp;
 	}
 
@@ -30,7 +30,7 @@
 		if(Std.is(this.expression, CMDifferentialOperator)) {
 			simplified = new CMDifferentialOperator(cast(this.expression.subnodes[0], CMExpression), this.level + 1);
 		} else {
-			if(opts["recurse"] != false) {
+			if(opts["recurse"] == null || opts["recurse"] == false) {
 				var tmpdiff = cast(this.copy(), CMDifferentialOperator);
 				tmpdiff.expression = tmpdiff.expression.simplify(opts);
 				simplified = tmpdiff;
@@ -47,7 +47,7 @@
 			return this;
 		}
 		var exp = this.expression;
-		for(i in 1...(this.level)) {
+		for(i in 0...(this.level)) {
 			exp = getExpressionDifferential(exp, opts);
 		}
 		return exp;
@@ -55,5 +55,9 @@
 
 	function getExpressionDifferential(expression:CMExpression, opts:Map<String,Dynamic>):CMExpression {
 		return expression.getDifferential(opts);
+	}
+
+	override function getStringForNode() {
+		return "diff";
 	}
 }
