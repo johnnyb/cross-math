@@ -1,12 +1,16 @@
-@:expose class CMFloatNumber extends CMNumber {
+@:expose class CMFloatNumber extends CMScalarNumber {
 	var number:Float;
 
 	public function new(a:Float) {
 		number = a;
 	}
 	
-	public function asFloatValue():Float {
+	override function asFloatValue():Float {
 		return number;
+	}
+
+	override function asIntValue():Int {
+		return cast(number, Int);
 	}
 
 	override function getStringForNode():String {

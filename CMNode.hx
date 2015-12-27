@@ -1,6 +1,12 @@
 @:expose class CMNode {
 	var subnodes:Array<CMNode>;
 
+	public function copy():CMNode {
+		var newnode = Reflect.copy(this);
+		newnode.subnodes = newnode.subnodes.copy();
+		return newnode;
+	}
+
 	public function duplicate():CMNode {
 		return null;
 	}

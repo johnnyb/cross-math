@@ -46,4 +46,25 @@
 	override function getStringForNode() {
 		return "*";
 	}
+
+	override function getDifferential(opts:Map<String, Dynamic>):CMExpression {
+		var new_exp:CMExpression = null;
+		if(subnodes.length == 0) {
+			return new CMIntegerNumber(0);
+		}
+		if(subnodes.length == 1) {
+			return cast(subnodes[0], CMExpression).getDifferential(opts);
+		}
+		for(node in subnodes) {
+			if(new_exp == null) {
+				new_exp = cast(node, CMExpression);
+			} else {
+				var diff_node = cast(node, CMExpression).getDifferential(opts);
+				var diff_exp = new_exp.getDifferential(opts);
+				new_exp = new CMAdditionOperator([new CMMultiplicationOperator([new_exp, diff_node]), new CMMultiplicationOperator([diff_exp, node])]);
+			}
+		}
+
+		return new_exp;
+	}
 }
