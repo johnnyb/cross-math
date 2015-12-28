@@ -28,8 +28,8 @@
 		trace(CMLib.parseExpression("(diff (^ x 2))").symbolicEvaluate(ctx).simplify(ctx).getStringForNodes());
 
 		trace(CMLib.symbolicEvaluate("(diff (/ x (- y 2)))").getStringForNodes());
-		for(i in 1...10000) {
-			CMLib.symbolicEvaluate("(diff (/ x (- y 2)))").getStringForNodes();
-		}
+		// for(i in 1...100000) {
+		//	CMLib.symbolicEvaluate("(diff (/ x (- y 2)))").getStringForNodes();
+		// }
 	}
 }
