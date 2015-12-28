@@ -46,8 +46,7 @@
 		}
 
 		if(remaining.length == 0) {
-			trace("WARNING: addition should not have zero operands");
-			return new CMIntegerNumber(0);
+			return CMLib.zero;
 		}
 
 		if(remaining.length == 1) {

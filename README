@@ -16,7 +16,7 @@ DESIGN
 
 There are many designs to choose from for symbolic algebra.  One option is to leave the equation entirely as a series of symbols, and then do abstract, global, rule-based manipulation of those symbols.  Another option, which we have taken for the moment, it to make each type of operator more knowledgeable about itself, and keep the global rules to a minimum.  For now, we are going with this second approach.  We may switch.  I can see reasons for doing so.  But for now, we are doing an object-oriented, tree approach, where each node on the tree is an object.
 
-The structure of the tree is this - each operator is a separate class, and each has a list of operands with the variable name "subnodes" of type Array<CMNode> (on expression-type objects, there is the same array casted as Array<CMExpression> through the expressionSubnodes property).  This is the static structure of the form.
+The structure of the tree is this - each operator is a separate class, and each has a list of operands with the variable name "subnodes" of type Array<CMNode> (on expression-type objects, there is the same array casted as Array<CMExpression> through the expressionSubnodes property).  This is the static structure of the form.  The only thing without subnodes are the terminals (numbers and variables).
 
 When doing evaluations, a CMEvaluationContext is passed, the structure of which is still pending.  This will hold variable values, function definitions, mode options, and probably a timer.  Right now, I am not doing any timing, but in the future it will likely be necessary.
 

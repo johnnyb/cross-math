@@ -6,6 +6,7 @@
 	public static function isSpecificInteger(n:CMNode, i:Int) {
 		if(Std.is(n, CMIntegerNumber)) {
 			var num = cast(n, CMIntegerNumber);
+			
 			if(num.asIntValue() == i) {
 				return true;
 			}

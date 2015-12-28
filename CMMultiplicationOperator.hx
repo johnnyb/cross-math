@@ -71,7 +71,7 @@
 		var new_exp:CMExpression = null;
 		var elist = expressionSubnodes;
 		if(elist.length == 0) {
-			return new CMIntegerNumber(0);
+			return CMLib.zero;
 		}
 		if(elist.length == 1) {
 			return elist[0].getDifferential(ctx);
